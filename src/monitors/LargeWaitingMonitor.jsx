@@ -524,7 +524,7 @@ function NoticeMarquee({ notices }) {
   );
 }
 
-export default function HospitalMonitor() {
+export default function LargeWaitingMonitor() {
   const [departments, setDepartments] = useState(null);
   const [notices, setNotices] = useState([]);
   const [selectedIds, setSelectedIds] = useLocalStorage("hm_main_selected", null);

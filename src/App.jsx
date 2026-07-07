@@ -2,7 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { useAuth } from "./auth/AuthContext";
 import LoginScreen from "./screens/LoginScreen";
 import SelectScreen from "./screens/SelectScreen";
-import HospitalMonitor from "./monitors/HospitalMonitor";
+import LargeWaitingMonitor from "./monitors/LargeWaitingMonitor";
 import SmallWaitingMonitor from "./monitors/SmallWaitingMonitor";
 
 function RequireAuth({ children }) {
@@ -39,7 +39,7 @@ export default function App() {
         path="/board/main"
         element={
           <RequireAuth>
-            <HospitalMonitor />
+            <LargeWaitingMonitor />
           </RequireAuth>
         }
       />
