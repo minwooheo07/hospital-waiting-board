@@ -19,6 +19,14 @@ const BOARDS = [
     desc: "의사 1~2명의 대기 목록을 크게 표시합니다. 진료실 입구 모니터에 적합하며 레이아웃과 컬러를 설정할 수 있습니다.",
     accent: "#059669",
   },
+  {
+    key: "pharmacy",
+    icon: "💊",
+    title: "약국 전광판",
+    subtitle: "원내약국 · 약 수령 대기",
+    desc: "조제가 완료된 투약번호를 호출합니다. 현재 호출 번호를 크게 보여주고, 수령 대기 중인 번호 목록을 함께 표시합니다.",
+    accent: "#0D9488",
+  },
 ];
 
 export default function SelectScreen() {

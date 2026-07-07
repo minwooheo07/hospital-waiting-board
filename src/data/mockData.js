@@ -197,3 +197,14 @@ export const HOSPITAL_INFO = {
     { day: "일·공휴일", time: "휴진", closed: true },
   ],
 };
+
+// 원내약국 투약번호 호출 현황 초기값. 실제로는 조제 시스템이 번호를 호출할 때마다
+// 이 목록 맨 앞에 새 항목이 쌓이는 형태로 동작한다 (dataService.callNextPharmacyNumber 참고).
+export const PHARMACY_QUEUE_SEED = [
+  { number: "284193", calledAt: Date.now() - 1000 * 30 },
+  { number: "284192", calledAt: Date.now() - 1000 * 95 },
+  { number: "284191", calledAt: Date.now() - 1000 * 160 },
+  { number: "284190", calledAt: Date.now() - 1000 * 230 },
+  { number: "284189", calledAt: Date.now() - 1000 * 300 },
+  { number: "284188", calledAt: Date.now() - 1000 * 370 },
+];
