@@ -208,3 +208,72 @@ export const PHARMACY_QUEUE_SEED = [
   { number: "284189", calledAt: Date.now() - 1000 * 300 },
   { number: "284188", calledAt: Date.now() - 1000 * 370 },
 ];
+
+// 응급실 병상 현황. KTAS(중증도 분류) 1~5등급 표준 색상을 사용한다.
+// 1: 소생 · 2: 긴급 · 3: 응급 · 4: 준응급 · 5: 비응급
+export const KTAS_LEVELS = {
+  1: { label: "소생", color: "#E11D48" },
+  2: { label: "긴급", color: "#F97316" },
+  3: { label: "응급", color: "#F59E0B" },
+  4: { label: "준응급", color: "#10B981" },
+  5: { label: "비응급", color: "#3B82F6" },
+};
+
+// KTAS 등급별 예상 대기 시간 안내.
+// 1~2등급은 대기 없이 중증 우선 진료, 3등급은 약 40분, 4~5등급은 구간으로 안내한다.
+export const KTAS_WAIT = {
+  1: { text: "중증 우선 진료", immediate: true },
+  2: { text: "중증 우선 진료", immediate: true },
+  3: { text: "약 40분", immediate: false },
+  4: { text: "1 ~ 2시간", immediate: false },
+  5: { text: "2시간 이상", immediate: false },
+};
+
+export const ER_INFO = {
+  bedCapacity: 24,
+};
+
+// 구역별 병상 가용 현황 (사용/전체). 혼잡의 원인을 파악하는 핵심 지표.
+export const ER_ZONES = [
+  { name: "응급처치실", used: 6, total: 8, color: "#F43F5E" },
+  { name: "관찰실", used: 9, total: 10, color: "#F59E0B" },
+  { name: "소아 구역", used: 2, total: 4, color: "#10B981" },
+  { name: "격리실", used: 3, total: 3, color: "#6366F1" },
+];
+
+// 병상 부족으로 응급실에 머무는 입원 대기(보딩) 환자 수 및 중환자실·수술실 가용 상태.
+// 상태 값: "가능" | "제한" | "불가"
+export const ER_RESOURCES = {
+  boarding: 5,
+  icu: "제한",
+  or: "가능",
+};
+
+// 최근 1~2시간 기준 검사 평균 소요시간(분).
+export const ER_TEST_TIMES = [
+  { name: "혈액검사", min: 46, icon: "🩸" },
+  { name: "CT", min: 32, icon: "🖥️" },
+  { name: "X-ray", min: 14, icon: "🦴" },
+];
+
+// 응급실 하단 마퀴 공지.
+export const ER_NOTICES = [
+  "응급도(KTAS)에 따라 진료 순서가 결정되므로, 나중에 오신 분이 먼저 진료받을 수 있습니다.",
+  "중증 응급환자 발생 시 진료가 지연될 수 있으니 양해 부탁드립니다.",
+  "보호자는 1인만 동반 가능하며, 감염 예방을 위해 마스크를 착용해 주세요.",
+  "응급실 진료비 및 대기 관련 문의는 원무과(☎ 1688-0000)로 연락 주세요.",
+];
+
+// 실제로는 EMR/베드사이드 모니터링 시스템에서 실시간으로 갱신되는 값이다.
+export const ER_PATIENTS_SEED = [
+  { id: "er-1", bed: "R-01", number: "202500231", name: "김도현", age: 62, gender: "남", ktas: 1, complaint: "흉통 · 호흡곤란", arrivalMin: 12, imaging: "진행중", lab: "완료", status: "진료중" },
+  { id: "er-2", bed: "A-03", number: "202500232", name: "이수민", age: 34, gender: "여", ktas: 2, complaint: "복통 · 구토", arrivalMin: 25, imaging: "완료", lab: "진행중", status: "진료중" },
+  { id: "er-3", bed: "A-05", number: "202500233", name: "박준서", age: 8, gender: "남", ktas: 3, complaint: "발열 · 경련 의심", arrivalMin: 18, imaging: "해당없음", lab: "대기", status: "대기" },
+  { id: "er-4", bed: "B-02", number: "202500234", name: "최영자", age: 78, gender: "여", ktas: 2, complaint: "낙상 · 고관절 통증", arrivalMin: 40, imaging: "완료", lab: "완료", status: "입원대기" },
+  { id: "er-5", bed: "C-07", number: "202500235", name: "정민재", age: 45, gender: "남", ktas: 4, complaint: "손가락 열상", arrivalMin: 33, imaging: "해당없음", lab: "해당없음", status: "진료중" },
+  { id: "er-6", bed: "A-08", number: "202500236", name: "한지우", age: 29, gender: "여", ktas: 3, complaint: "알레르기 반응", arrivalMin: 9, imaging: "해당없음", lab: "진행중", status: "대기" },
+  { id: "er-7", bed: "R-02", number: "202500237", name: "윤성훈", age: 55, gender: "남", ktas: 1, complaint: "의식저하", arrivalMin: 5, imaging: "대기", lab: "진행중", status: "진료중" },
+  { id: "er-8", bed: "B-04", number: "202500238", name: "조은서", age: 71, gender: "여", ktas: 3, complaint: "어지러움 · 두통", arrivalMin: 52, imaging: "완료", lab: "완료", status: "퇴실대기" },
+  { id: "er-9", bed: "C-01", number: "202500239", name: "장태민", age: 19, gender: "남", ktas: 4, complaint: "발목 염좌", arrivalMin: 21, imaging: "대기", lab: "해당없음", status: "대기" },
+  { id: "er-10", bed: "A-06", number: "202500240", name: "서다인", age: 3, gender: "여", ktas: 3, complaint: "고열 · 탈수 의심", arrivalMin: 15, imaging: "해당없음", lab: "진행중", status: "진료중" },
+];

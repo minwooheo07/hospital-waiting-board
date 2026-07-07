@@ -5,6 +5,9 @@ import SelectScreen from "./screens/SelectScreen";
 import LargeWaitingMonitor from "./monitors/LargeWaitingMonitor";
 import SmallWaitingMonitor from "./monitors/SmallWaitingMonitor";
 import PharmacyMonitor from "./monitors/PharmacyMonitor";
+import EmergencyMonitor from "./monitors/EmergencyMonitor";
+
+const BOARD_KEYS = ["main", "small", "pharmacy", "er"];
 
 function RequireAuth({ children }) {
   const { user } = useAuth();
@@ -17,7 +20,7 @@ function Home() {
   const { user } = useAuth();
   if (!user) return <Navigate to="/login" replace />;
   const defaultBoard = localStorage.getItem("hm_default_board");
-  if (defaultBoard === "main" || defaultBoard === "small" || defaultBoard === "pharmacy") {
+  if (BOARD_KEYS.includes(defaultBoard)) {
     return <Navigate to={`/board/${defaultBoard}`} replace />;
   }
   return <Navigate to="/select" replace />;
@@ -57,6 +60,14 @@ export default function App() {
         element={
           <RequireAuth>
             <PharmacyMonitor />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/board/er"
+        element={
+          <RequireAuth>
+            <EmergencyMonitor />
           </RequireAuth>
         }
       />

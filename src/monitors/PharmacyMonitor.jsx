@@ -5,7 +5,8 @@ import { fetchPharmacyQueue, fetchHospitalInfo, fetchNotices, nextPharmacyNumber
 
 const ACCENT = "#0D9488";
 const CALL_INTERVAL_MS = 8000;
-const MAX_QUEUE = 16;
+// 패널 높이 안에서 스크롤 없이 다 보여줄 수 있는 만큼만 유지한다 (넘치면 오래된 항목부터 제거).
+const MAX_QUEUE = 10;
 
 function formatElapsed(calledAt, now) {
   const sec = Math.max(0, Math.floor((now - calledAt) / 1000));
@@ -149,10 +150,11 @@ function NoticeMarquee({ notices }) {
   );
 }
 
-// 우측: 조제완료된 투약번호 목록
+// 우측: 조제완료된 투약번호 목록. 패널 높이가 고정돼 있고 자리가 넉넉하므로
+// 페이징 없이 반응형 그리드로 전체를 한 번에 보여준다.
 function ReadyList({ queue, now }) {
   return (
-    <div style={{ flex: 1, display: "flex", flexDirection: "column", background: "#fff", borderRadius: "20px", overflow: "hidden", boxShadow: "0 2px 4px rgba(0,0,0,0.04), 0 8px 32px rgba(0,0,0,0.06)", minHeight: 0 }}>
+    <div style={{ flex: 1, display: "flex", flexDirection: "column", background: "#fff", borderRadius: "20px", overflow: "hidden", boxShadow: "0 2px 4px rgba(0,0,0,0.04), 0 8px 32px rgba(0,0,0,0.06)", minHeight: 0, minWidth: 0 }}>
       <div style={{ padding: "18px 24px 14px", borderBottom: "1px solid #F3F4F6", display: "flex", alignItems: "center", justifyContent: "space-between", flexShrink: 0 }}>
         <div>
           <div style={{ fontSize: "1.1rem", fontWeight: 900, color: "#111827" }}>조제완료 · 수령 대기</div>
@@ -166,7 +168,7 @@ function ReadyList({ queue, now }) {
         </div>
       </div>
 
-      <div style={{ flex: 1, overflowY: "auto", padding: "14px 16px", display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: "12px", alignContent: "start" }}>
+      <div style={{ flex: 1, minWidth: 0, overflow: "hidden", padding: "14px 16px", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gridAutoRows: "min-content", alignContent: "start", gap: "12px" }}>
         {queue.map((item, i) => {
           const isLatest = i === 0;
           return (
@@ -293,7 +295,7 @@ export default function PharmacyMonitor() {
           <CurrentCallCard current={current} now={now} />
           <HospitalInfoCard info={hospitalInfo} />
         </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: "18px", minHeight: 0 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "18px", minHeight: 0, minWidth: 0 }}>
           <ReadyList queue={queue} now={now} />
           {notices.length > 0 && <NoticeMarquee notices={notices} />}
         </div>

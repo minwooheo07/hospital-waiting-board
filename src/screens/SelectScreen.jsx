@@ -27,6 +27,14 @@ const BOARDS = [
     desc: "조제가 완료된 투약번호를 호출합니다. 현재 호출 번호를 크게 보여주고, 수령 대기 중인 번호 목록을 함께 표시합니다.",
     accent: "#0D9488",
   },
+  {
+    key: "er",
+    icon: "🚑",
+    title: "응급실 혼잡도 전광판",
+    subtitle: "응급의료센터 · 상황실",
+    desc: "병상 가동률과 중증도(KTAS), 검사 진행 현황을 도넛 차트로 요약하고, 현재 재실 환자 목록을 함께 보여줍니다.",
+    accent: "#DC2626",
+  },
 ];
 
 export default function SelectScreen() {

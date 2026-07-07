@@ -1,7 +1,19 @@
 // 데이터 접근 계층.
 // 현재는 mock 데이터를 비동기로 반환하며, 실제 백엔드 연동 시
 // 이 파일의 함수 내부만 fetch/axios 호출로 교체하면 화면 코드는 수정할 필요가 없다.
-import { USERS, DEPARTMENTS, NOTICES, HOSPITAL_INFO, PHARMACY_QUEUE_SEED } from "../data/mockData";
+import {
+  USERS,
+  DEPARTMENTS,
+  NOTICES,
+  HOSPITAL_INFO,
+  PHARMACY_QUEUE_SEED,
+  ER_INFO,
+  ER_PATIENTS_SEED,
+  ER_ZONES,
+  ER_RESOURCES,
+  ER_TEST_TIMES,
+  ER_NOTICES,
+} from "../data/mockData";
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -37,4 +49,16 @@ export async function fetchPharmacyQueue() {
 export function nextPharmacyNumber(lastNumber) {
   const n = parseInt(lastNumber, 10) + 1;
   return String(n).padStart(6, "0");
+}
+
+export async function fetchERStatus() {
+  await delay(200);
+  return {
+    bedCapacity: ER_INFO.bedCapacity,
+    patients: ER_PATIENTS_SEED.map((p) => ({ ...p })),
+    zones: ER_ZONES.map((z) => ({ ...z })),
+    resources: { ...ER_RESOURCES },
+    testTimes: ER_TEST_TIMES.map((t) => ({ ...t })),
+    notices: [...ER_NOTICES],
+  };
 }
