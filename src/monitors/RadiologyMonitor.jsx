@@ -19,13 +19,19 @@ function formatElapsed(calledAt, now) {
   return `${Math.floor(sec / 60)}분 전`;
 }
 
+function formatWaitTime(sinceAt, now) {
+  const sec = Math.max(0, Math.floor((now - sinceAt) / 1000));
+  if (sec < 60) return `${sec}초째 대기`;
+  return `${Math.floor(sec / 60)}분째 대기`;
+}
+
 // 그리드가 몇 줄로 접히는지에 따라 카드 실제 높이가 크게 달라지므로,
 // 방 개수(=줄 수)에 맞춰 페이지당 보여줄 대기자 수도 함께 조정한다.
 // 1개(전체화면)·2~3개(한 줄, 카드가 세로로 길다)·4개 이상(두 줄, 카드가 절반 높이)
 function waitingPerPage(roomCount) {
-  if (roomCount <= 1) return 10;
-  if (roomCount <= 3) return 7;
-  return 4;
+  if (roomCount <= 1) return 8;
+  if (roomCount <= 3) return 6;
+  return 3;
 }
 
 // 로고 클릭 시 뜨는 설정 모달. 파트(X-ray/CT/MRI/초음파)를 고르고,
@@ -262,13 +268,30 @@ function RoomCard({ room, modalityName, modalityIcon, accent, queue, now, spacio
           <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", color: "#D1D5DB", fontSize: "0.9rem", fontWeight: 600 }}>다음 대기자가 없습니다</div>
         ) : (
           waitingPage.map((p, i) => (
-            <div key={p.id} style={{ display: "flex", alignItems: "center", gap: "14px", padding: "13px 16px", borderRadius: "12px", background: "#FAFAFA" }}>
-              <span style={{ width: "30px", fontSize: "1.25rem", fontWeight: 800, color: "#9CA3AF" }}>{waitPage * perPage + i + 1}</span>
-              <span style={{ fontSize: "1.45rem", fontWeight: 800, color: "#1F2937" }}>{maskName(p.name)}</span>
-              <span style={{ fontSize: "1.1rem", fontWeight: 600, color: "#6B7280" }}>
+            <div key={p.id} style={{ display: "flex", alignItems: "center", gap: "16px", padding: "16px 18px", borderRadius: "12px", background: "#FAFAFA" }}>
+              <span style={{ width: "34px", fontSize: "1.5rem", fontWeight: 800, color: "#9CA3AF" }}>{waitPage * perPage + i + 1}</span>
+              <span style={{ fontSize: "1.7rem", fontWeight: 800, color: "#1F2937" }}>{maskName(p.name)}</span>
+              <span style={{ fontSize: "1.3rem", fontWeight: 600, color: "#6B7280", whiteSpace: "nowrap" }}>
                 {p.age}세 · {p.gender}
               </span>
-              <span style={{ flex: 1, minWidth: 0, fontSize: "1.1rem", fontWeight: 600, color: "#6B7280", textAlign: "right", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{p.exam}</span>
+              <span style={{ flex: 1, minWidth: 0 }} />
+              <span
+                style={{
+                  fontSize: "1.25rem",
+                  fontWeight: 700,
+                  color: accent,
+                  background: `${accent}14`,
+                  padding: "6px 16px",
+                  borderRadius: "999px",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  maxWidth: "220px",
+                }}
+              >
+                {p.exam}
+              </span>
+              <span style={{ fontSize: "1.15rem", fontWeight: 600, color: "#9CA3AF", whiteSpace: "nowrap" }}>{formatWaitTime(p.calledAt, now)}</span>
             </div>
           ))
         )}
@@ -358,7 +381,7 @@ export default function RadiologyMonitor() {
   return (
     <div style={{ height: "100vh", overflow: "hidden", background: "#F1F5F9", display: "flex", flexDirection: "column" }}>
       {/* 헤더 */}
-      <div style={{ background: "#fff", padding: "14px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", boxShadow: "0 1px 0 #F3F4F6, 0 2px 8px rgba(0,0,0,0.04)", flexShrink: 0 }}>
+      <div style={{ position: "relative", background: "#fff", padding: "14px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", boxShadow: "0 1px 0 #F3F4F6, 0 2px 8px rgba(0,0,0,0.04)", flexShrink: 0 }}>
         <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
           <div
             onClick={() => setShowModal(true)}
@@ -392,6 +415,10 @@ export default function RadiologyMonitor() {
               <span style={{ color: modality.accent, fontWeight: 700 }}>영상의학과 · {modality.name}</span> · 검사 호출 현황판 ({roomCount}개 방)
             </div>
           </div>
+        </div>
+        <div style={{ position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)", textAlign: "center", pointerEvents: "none" }}>
+          <div style={{ fontSize: "1.5rem", fontWeight: 900, color: "#111827", letterSpacing: "-0.01em", whiteSpace: "nowrap" }}>영상의학과 호출 전광판</div>
+          <div style={{ width: "40px", height: "3px", borderRadius: "2px", background: modality.accent, margin: "6px auto 0" }} />
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
           <BoardNav />

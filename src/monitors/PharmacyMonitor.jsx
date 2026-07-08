@@ -290,7 +290,7 @@ export default function PharmacyMonitor() {
       `}</style>
 
       {/* 헤더 */}
-      <div style={{ background: "#fff", padding: "14px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", boxShadow: "0 1px 0 #F3F4F6, 0 2px 8px rgba(0,0,0,0.04)", flexShrink: 0 }}>
+      <div style={{ position: "relative", background: "#fff", padding: "14px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", boxShadow: "0 1px 0 #F3F4F6, 0 2px 8px rgba(0,0,0,0.04)", flexShrink: 0 }}>
         <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
           <div style={{ width: "56px", height: "56px", borderRadius: "14px", background: `linear-gradient(135deg, ${ACCENT} 0%, #0F766E 100%)`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.6rem", boxShadow: `0 2px 8px ${ACCENT}40` }}>
             💊
@@ -301,6 +301,10 @@ export default function PharmacyMonitor() {
               <span style={{ color: ACCENT, fontWeight: 700 }}>원내약국</span> · 투약번호 호출 현황판
             </div>
           </div>
+        </div>
+        <div style={{ position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)", textAlign: "center", pointerEvents: "none" }}>
+          <div style={{ fontSize: "1.5rem", fontWeight: 900, color: "#111827", letterSpacing: "-0.01em", whiteSpace: "nowrap" }}>약국 전광판</div>
+          <div style={{ width: "40px", height: "3px", borderRadius: "2px", background: ACCENT, margin: "6px auto 0" }} />
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
           <BoardNav />

@@ -3,6 +3,7 @@ import Clock from "../components/Clock";
 import BoardNav from "../components/BoardNav";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { fetchDepartments, fetchNotices } from "../api/dataService";
+import { maskName } from "../utils/maskName";
 
 function DoctorPanel({ doctor }) {
   const waiting = doctor.patients.filter((p) => p.status === "대기").length;
@@ -116,7 +117,7 @@ function DoctorPanel({ doctor }) {
           <div style={{ flex: 1 }}>
             <span style={{ fontSize: "0.7rem", color: "#9CA3AF", marginRight: "8px" }}>현재 진료중</span>
             <span style={{ fontSize: "0.88rem", fontWeight: 700, color: "#111827" }}>{current.number}</span>
-            <span style={{ fontSize: "0.82rem", color: "#374151", marginLeft: "8px" }}>{current.name} 님</span>
+            <span style={{ fontSize: "0.82rem", color: "#374151", marginLeft: "8px" }}>{maskName(current.name)} 님</span>
           </div>
           <span style={{ fontSize: "0.65rem", color: doctor.accentColor, fontWeight: 600, background: `${doctor.accentColor}12`, padding: "2px 8px", borderRadius: "6px" }}>{current.type}</span>
         </div>
@@ -179,7 +180,7 @@ function DoctorPanel({ doctor }) {
               >
                 {p.number}
               </div>
-              <div style={{ fontSize: "0.85rem", fontWeight: 600, color: isActive ? "#111827" : "#374151" }}>{p.name}</div>
+              <div style={{ fontSize: "0.85rem", fontWeight: 600, color: isActive ? "#111827" : "#374151" }}>{maskName(p.name)}</div>
               <div style={{ fontSize: "0.72rem", color: "#6B7280" }}>{p.age}세</div>
               <div style={{ fontSize: "0.7rem", color: "#9CA3AF" }}>{p.gender}</div>
               <div style={{ textAlign: "center" }}>
@@ -615,6 +616,11 @@ export default function LargeWaitingMonitor() {
               SEOUL CENTRAL HOSPITAL &nbsp;·&nbsp; 외래 진료 대기 현황
             </div>
           </div>
+        </div>
+
+        <div style={{ position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)", textAlign: "center", pointerEvents: "none" }}>
+          <div style={{ fontSize: "1.5rem", fontWeight: 900, color: "#111827", letterSpacing: "-0.01em", whiteSpace: "nowrap" }}>대대기 전광판</div>
+          <div style={{ width: "40px", height: "3px", borderRadius: "2px", background: "#2563EB", margin: "6px auto 0" }} />
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>

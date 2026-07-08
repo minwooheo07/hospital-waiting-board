@@ -13,8 +13,8 @@ const ROWS_PER_PAGE = 7;
 // 진행현황 우선순위(수술 중인 환자가 가장 먼저 보이도록)
 const STATUS_ORDER = ["수술중", "마취중", "회복중", "대기", "완료"];
 
-// 표 컬럼 너비를 고정해 특정 항목만 커지지 않고 일관되게 맞춘다.
-const GRID_COLS = "56px 108px 1fr 120px 130px 100px 150px 120px";
+// 표 컬럼 너비를 비율(fr) 기반으로 배분해 특정 항목만 과도하게 넓어지지 않고 전체적으로 균형 있게 맞춘다.
+const GRID_COLS = "minmax(60px,0.5fr) minmax(120px,0.8fr) minmax(120px,0.9fr) minmax(200px,1.3fr) minmax(120px,0.9fr) minmax(130px,1fr) minmax(90px,0.7fr) minmax(120px,0.9fr)";
 
 function formatElapsed(min) {
   if (min < 60) return `${min}분`;
@@ -29,18 +29,51 @@ function StatusBadge({ value }) {
         display: "inline-flex",
         alignItems: "center",
         gap: "7px",
-        fontSize: "0.95rem",
+        fontSize: "1.45rem",
         fontWeight: 800,
-        padding: "7px 16px",
+        padding: "9px 18px",
         borderRadius: "999px",
         color: cfg.color,
         background: cfg.bg,
         whiteSpace: "nowrap",
+        animation: value === "수술중" ? "badgePulse 2.2s ease-out infinite" : "none",
       }}
     >
-      <span style={{ width: "7px", height: "7px", borderRadius: "50%", background: cfg.color, flexShrink: 0, animation: value === "수술중" ? "pulse 1.4s ease-in-out infinite" : "none" }} />
+      <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: cfg.color, flexShrink: 0, animation: value === "수술중" ? "pulse 1.4s ease-in-out infinite" : "none" }} />
       {value}
     </span>
+  );
+}
+
+// 환자명 — 이니셜만 넣던 성별 컬러 배지를 전체 이름이 들어가는 배지로 확장했다.
+function NameTag({ name, gender }) {
+  const masked = [...maskName(name)].join(" ");
+  const isFemale = gender === "여";
+  const color = isFemale ? "#DB2777" : "#2563EB";
+  return (
+    <div
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        justifySelf: "start",
+        width: "fit-content",
+        maxWidth: "100%",
+        padding: "8px 18px",
+        borderRadius: "12px",
+        background: isFemale ? "linear-gradient(135deg, #F472B6 0%, #DB2777 100%)" : "linear-gradient(135deg, #60A5FA 0%, #2563EB 100%)",
+        color: "#fff",
+        fontSize: "1.6rem",
+        fontWeight: 900,
+        letterSpacing: "-0.01em",
+        boxShadow: `0 3px 8px ${color}50`,
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+      }}
+    >
+      {masked}
+    </div>
   );
 }
 
@@ -92,7 +125,7 @@ export default function OperatingRoomMonitor() {
   return (
     <div style={{ height: "100vh", overflow: "hidden", background: "#F1F5F9", display: "flex", flexDirection: "column" }}>
       {/* 헤더 */}
-      <div style={{ background: "#fff", padding: "14px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", boxShadow: "0 1px 0 #F3F4F6, 0 2px 8px rgba(0,0,0,0.04)", flexShrink: 0 }}>
+      <div style={{ position: "relative", background: "#fff", padding: "14px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", boxShadow: "0 1px 0 #F3F4F6, 0 2px 8px rgba(0,0,0,0.04)", flexShrink: 0 }}>
         <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
           <div style={{ width: "56px", height: "56px", borderRadius: "14px", background: `linear-gradient(135deg, ${ACCENT} 0%, #4C1D95 100%)`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.6rem", boxShadow: `0 4px 12px ${ACCENT}40` }}>
             🔪
@@ -103,6 +136,10 @@ export default function OperatingRoomMonitor() {
               <span style={{ color: ACCENT, fontWeight: 700 }}>수술실</span> · 수술 진행 현황판
             </div>
           </div>
+        </div>
+        <div style={{ position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)", textAlign: "center", pointerEvents: "none" }}>
+          <div style={{ fontSize: "1.5rem", fontWeight: 900, color: "#0F172A", letterSpacing: "-0.01em", whiteSpace: "nowrap" }}>수술실 진행 현황판</div>
+          <div style={{ width: "40px", height: "3px", borderRadius: "2px", background: ACCENT, margin: "6px auto 0" }} />
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
           <BoardNav />
@@ -146,8 +183,8 @@ export default function OperatingRoomMonitor() {
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: GRID_COLS, padding: "10px 24px", gap: "10px", background: "#F8FAFC", borderBottom: "1px solid #F1F5F9", flexShrink: 0 }}>
-            {["순번", "수술방", "환자명", "성별/나이", "진료과", "병동", "진행현황", "경과시간"].map((h) => (
-              <div key={h} style={{ fontSize: "0.75rem", fontWeight: 700, color: "#94A3B8", letterSpacing: "0.04em" }}>
+            {["순번", "진행현황", "수술방", "환자명", "성별/나이", "진료과", "병동", "경과시간"].map((h) => (
+              <div key={h} style={{ fontSize: "0.95rem", fontWeight: 700, color: "#94A3B8", letterSpacing: "0.04em" }}>
                 {h}
               </div>
             ))}
@@ -161,25 +198,25 @@ export default function OperatingRoomMonitor() {
                   display: "grid",
                   gridTemplateColumns: GRID_COLS,
                   alignItems: "center",
-                  padding: "16px 24px",
+                  padding: "18px 24px",
                   gap: "10px",
                   borderBottom: "1px solid #F8FAFC",
                   borderLeft: p.status === "수술중" ? `3px solid ${OR_STATUS_LEVELS["수술중"].color}` : "3px solid transparent",
                   background: p.status === "수술중" ? "#FAF5FF" : "#fff",
                 }}
               >
-                <div style={{ fontSize: "0.95rem", color: "#94A3B8", fontWeight: 700 }}>{page * ROWS_PER_PAGE + i + 1}</div>
-                <div style={{ fontSize: "1.05rem", fontWeight: 800, color: "#334155" }}>{p.room}</div>
-                <div style={{ fontSize: "1.05rem", fontWeight: 800, color: "#0F172A", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{maskName(p.name)}</div>
-                <div style={{ fontSize: "1.05rem", color: "#64748B", fontWeight: 600 }}>
-                  {p.gender} · {p.age}세
-                </div>
-                <div style={{ fontSize: "1.05rem", color: "#334155", fontWeight: 700, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{p.dept}</div>
-                <div style={{ fontSize: "1.05rem", color: "#64748B", fontWeight: 600 }}>{p.ward}</div>
+                <div style={{ fontSize: "1.2rem", color: "#94A3B8", fontWeight: 700 }}>{page * ROWS_PER_PAGE + i + 1}</div>
                 <div>
                   <StatusBadge value={p.status} />
                 </div>
-                <div style={{ fontSize: "1.05rem", color: "#64748B", fontWeight: 600 }}>{p.status === "대기" ? "-" : formatElapsed(p.startedMin)}</div>
+                <div style={{ fontSize: "1.35rem", fontWeight: 800, color: "#334155" }}>{p.room}</div>
+                <NameTag name={p.name} gender={p.gender} />
+                <div style={{ fontSize: "1.3rem", color: "#64748B", fontWeight: 600 }}>
+                  {p.gender} · {p.age}세
+                </div>
+                <div style={{ fontSize: "1.3rem", color: "#334155", fontWeight: 700, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{p.dept}</div>
+                <div style={{ fontSize: "1.3rem", color: "#64748B", fontWeight: 600 }}>{p.ward}</div>
+                <div style={{ fontSize: "1.3rem", color: "#64748B", fontWeight: 600 }}>{p.status === "대기" ? "-" : formatElapsed(p.startedMin)}</div>
               </div>
             ))}
           </div>

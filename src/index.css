@@ -41,6 +41,18 @@ body {
   }
 }
 
+@keyframes badgePulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, currentColor 30%, transparent);
+  }
+  70% {
+    box-shadow: 0 0 0 7px transparent;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
 @keyframes pulse {
   0%,
   100% {

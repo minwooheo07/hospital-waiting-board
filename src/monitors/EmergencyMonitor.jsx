@@ -6,6 +6,7 @@ import NoticeMarquee from "../components/NoticeMarquee";
 import { fetchERStatus } from "../api/dataService";
 import { usePaging } from "../hooks/usePaging";
 import { KTAS_LEVELS, KTAS_WAIT } from "../data/mockData";
+import { maskName } from "../utils/maskName";
 
 const ACCENT = "#E11D48";
 const ROWS_PER_PAGE = 6;
@@ -44,15 +45,15 @@ const cardStyle = {
 
 const cardTitle = (title, subtitle) => (
   <div style={{ marginBottom: "14px" }}>
-    <div style={{ fontSize: "0.92rem", fontWeight: 800, color: "#0F172A", letterSpacing: "-0.01em" }}>{title}</div>
-    {subtitle && <div style={{ fontSize: "0.68rem", color: "#94A3B8", marginTop: "2px" }}>{subtitle}</div>}
+    <div style={{ fontSize: "1.05rem", fontWeight: 800, color: "#0F172A", letterSpacing: "-0.01em" }}>{title}</div>
+    {subtitle && <div style={{ fontSize: "0.78rem", color: "#94A3B8", marginTop: "2px" }}>{subtitle}</div>}
   </div>
 );
 
 function TestBadge({ value }) {
   const cfg = TEST_STATUS[value] || TEST_STATUS["해당없음"];
   return (
-    <span style={{ display: "inline-flex", alignItems: "center", gap: "5px", fontSize: "0.72rem", fontWeight: 700, padding: "3px 9px 3px 7px", borderRadius: "999px", color: cfg.color, background: cfg.bg, whiteSpace: "nowrap" }}>
+    <span style={{ display: "inline-flex", alignItems: "center", gap: "5px", fontSize: "1.05rem", fontWeight: 700, padding: "5px 12px 5px 10px", borderRadius: "999px", color: cfg.color, background: cfg.bg, whiteSpace: "nowrap" }}>
       <span style={{ width: "5px", height: "5px", borderRadius: "50%", background: cfg.dot }} />
       {value}
     </span>
@@ -62,7 +63,7 @@ function TestBadge({ value }) {
 function StatusBadge({ value }) {
   const cfg = STATUS_CONFIG[value] || STATUS_CONFIG["대기"];
   return (
-    <span style={{ fontSize: "0.75rem", fontWeight: 800, padding: "4px 11px", borderRadius: "999px", color: cfg.color, background: cfg.bg, whiteSpace: "nowrap" }}>
+    <span style={{ fontSize: "1.1rem", fontWeight: 800, padding: "6px 14px", borderRadius: "999px", color: cfg.color, background: cfg.bg, whiteSpace: "nowrap" }}>
       {value}
     </span>
   );
@@ -72,7 +73,7 @@ function KtasBadge({ level }) {
   const cfg = KTAS_LEVELS[level];
   const textColor = level === 3 ? "#7A5B00" : "#fff";
   return (
-    <span style={{ display: "inline-flex", alignItems: "center", gap: "5px", fontSize: "0.75rem", fontWeight: 800, color: textColor, background: cfg.color, padding: "4px 10px", borderRadius: "8px", whiteSpace: "nowrap", boxShadow: `0 2px 6px ${cfg.color}40` }}>
+    <span style={{ display: "inline-flex", alignItems: "center", gap: "5px", fontSize: "1.1rem", fontWeight: 800, color: textColor, background: cfg.color, padding: "6px 13px", borderRadius: "8px", whiteSpace: "nowrap", boxShadow: `0 2px 6px ${cfg.color}40` }}>
       {level} · {cfg.label}
     </span>
   );
@@ -82,19 +83,19 @@ function WaitBadge({ level }) {
   const cfg = KTAS_WAIT[level];
   if (cfg.immediate) {
     return (
-      <span style={{ display: "inline-flex", alignItems: "center", gap: "5px", fontSize: "0.74rem", fontWeight: 800, color: "#E11D48", background: "#FEF2F2", padding: "4px 10px", borderRadius: "8px", whiteSpace: "nowrap" }}>
+      <span style={{ display: "inline-flex", alignItems: "center", gap: "5px", fontSize: "1.07rem", fontWeight: 800, color: "#E11D48", background: "#FEF2F2", padding: "6px 13px", borderRadius: "8px", whiteSpace: "nowrap" }}>
         <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#E11D48", animation: "pulse 1.4s ease-in-out infinite" }} />
         {cfg.text}
       </span>
     );
   }
-  return <span style={{ fontSize: "0.8rem", fontWeight: 700, color: "#334155", whiteSpace: "nowrap" }}>{cfg.text}</span>;
+  return <span style={{ fontSize: "1.15rem", fontWeight: 700, color: "#334155", whiteSpace: "nowrap" }}>{cfg.text}</span>;
 }
 
 function BedBadge({ bed }) {
   const isResus = bed.startsWith("R");
   return (
-    <span style={{ display: "inline-flex", alignItems: "center", fontSize: "0.75rem", fontWeight: 800, color: isResus ? "#E11D48" : "#334155", background: isResus ? "#FEF2F2" : "#F1F5F9", border: `1px solid ${isResus ? "#FBCFE8" : "#E2E8F0"}`, padding: "3px 8px", borderRadius: "7px", fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>
+    <span style={{ display: "inline-flex", alignItems: "center", fontSize: "1.1rem", fontWeight: 800, color: isResus ? "#E11D48" : "#334155", background: isResus ? "#FEF2F2" : "#F1F5F9", border: `1px solid ${isResus ? "#FBCFE8" : "#E2E8F0"}`, padding: "5px 11px", borderRadius: "7px", fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>
       {bed}
     </span>
   );
@@ -106,8 +107,8 @@ function Legend({ items }) {
       {items.map((item) => (
         <div key={item.label} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <div style={{ width: "9px", height: "9px", borderRadius: "3px", background: item.color, flexShrink: 0 }} />
-          <span style={{ fontSize: "0.75rem", color: "#64748B", flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{item.label}</span>
-          <span style={{ fontSize: "0.8rem", fontWeight: 800, color: "#0F172A" }}>{item.value}</span>
+          <span style={{ fontSize: "0.85rem", color: "#64748B", flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{item.label}</span>
+          <span style={{ fontSize: "0.92rem", fontWeight: 800, color: "#0F172A" }}>{item.value}</span>
         </div>
       ))}
     </div>
@@ -117,12 +118,12 @@ function Legend({ items }) {
 function centerNum(top, bottom) {
   return {
     top: (
-      <div key="t" style={{ fontSize: "1.65rem", fontWeight: 900, color: "#0F172A", lineHeight: 1.05, letterSpacing: "-0.02em" }}>
+      <div key="t" style={{ fontSize: "1.9rem", fontWeight: 900, color: "#0F172A", lineHeight: 1.05, letterSpacing: "-0.02em" }}>
         {top}
       </div>
     ),
     bottom: (
-      <div key="b" style={{ fontSize: "0.62rem", color: "#94A3B8", marginTop: "3px", fontWeight: 700 }}>
+      <div key="b" style={{ fontSize: "0.72rem", color: "#94A3B8", marginTop: "3px", fontWeight: 700 }}>
         {bottom}
       </div>
     ),
@@ -141,11 +142,11 @@ function ZoneBars({ zones }) {
           return (
             <div key={z.name}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "5px" }}>
-                <span style={{ fontSize: "0.78rem", fontWeight: 700, color: "#334155" }}>{z.name}</span>
-                <span style={{ fontSize: "0.78rem", fontWeight: 800, color: full ? "#E11D48" : "#0F172A" }}>
+                <span style={{ fontSize: "0.9rem", fontWeight: 700, color: "#334155" }}>{z.name}</span>
+                <span style={{ fontSize: "0.9rem", fontWeight: 800, color: full ? "#E11D48" : "#0F172A" }}>
                   {z.used}
                   <span style={{ color: "#CBD5E1", fontWeight: 600 }}> / {z.total}</span>
-                  {full && <span style={{ fontSize: "0.62rem", color: "#E11D48", marginLeft: "5px", fontWeight: 800 }}>만실</span>}
+                  {full && <span style={{ fontSize: "0.72rem", color: "#E11D48", marginLeft: "5px", fontWeight: 800 }}>만실</span>}
                 </span>
               </div>
               <div style={{ height: "7px", borderRadius: "999px", background: "#EEF1F6", overflow: "hidden" }}>
@@ -169,10 +170,10 @@ function ResourceCard({ resources }) {
       <div style={{ borderRadius: "16px", padding: "14px 16px", background: "linear-gradient(135deg,#FFF1F2,#FFE4E6)", border: "1px solid #FECDD3", display: "flex", alignItems: "center", gap: "12px", marginBottom: "12px" }}>
         <div style={{ width: "44px", height: "44px", borderRadius: "12px", background: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.3rem", flexShrink: 0 }}>🛏️</div>
         <div style={{ flex: 1 }}>
-          <div style={{ fontSize: "0.68rem", color: "#9F1239", fontWeight: 700 }}>입원 대기(보딩) 환자</div>
+          <div style={{ fontSize: "0.78rem", color: "#9F1239", fontWeight: 700 }}>입원 대기(보딩) 환자</div>
           <div style={{ display: "flex", alignItems: "baseline", gap: "4px" }}>
-            <span style={{ fontSize: "1.8rem", fontWeight: 900, color: "#E11D48", lineHeight: 1 }}>{resources.boarding}</span>
-            <span style={{ fontSize: "0.8rem", fontWeight: 700, color: "#9F1239" }}>명</span>
+            <span style={{ fontSize: "2rem", fontWeight: 900, color: "#E11D48", lineHeight: 1 }}>{resources.boarding}</span>
+            <span style={{ fontSize: "0.9rem", fontWeight: 700, color: "#9F1239" }}>명</span>
           </div>
         </div>
       </div>
@@ -182,8 +183,8 @@ function ResourceCard({ resources }) {
           { label: "수술실(OR)", value: resources.or, cfg: or },
         ].map((r) => (
           <div key={r.label} style={{ borderRadius: "12px", padding: "10px 12px", background: r.cfg.bg, textAlign: "center" }}>
-            <div style={{ fontSize: "0.66rem", color: "#64748B", fontWeight: 700, marginBottom: "3px" }}>{r.label}</div>
-            <div style={{ fontSize: "0.95rem", fontWeight: 900, color: r.cfg.color }}>{r.value}</div>
+            <div style={{ fontSize: "0.76rem", color: "#64748B", fontWeight: 700, marginBottom: "3px" }}>{r.label}</div>
+            <div style={{ fontSize: "1.08rem", fontWeight: 900, color: r.cfg.color }}>{r.value}</div>
           </div>
         ))}
       </div>
@@ -200,10 +201,10 @@ function TestTimesCard({ testTimes }) {
         {testTimes.map((t) => (
           <div key={t.name} style={{ display: "flex", alignItems: "center", gap: "12px" }}>
             <div style={{ width: "36px", height: "36px", borderRadius: "10px", background: "#F1F5F9", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1rem", flexShrink: 0 }}>{t.icon}</div>
-            <span style={{ flex: 1, fontSize: "0.82rem", fontWeight: 700, color: "#334155" }}>{t.name}</span>
-            <span style={{ fontSize: "1.1rem", fontWeight: 900, color: "#0F172A", fontVariantNumeric: "tabular-nums" }}>
+            <span style={{ flex: 1, fontSize: "0.92rem", fontWeight: 700, color: "#334155" }}>{t.name}</span>
+            <span style={{ fontSize: "1.25rem", fontWeight: 900, color: "#0F172A", fontVariantNumeric: "tabular-nums" }}>
               {t.min}
-              <span style={{ fontSize: "0.72rem", fontWeight: 700, color: "#94A3B8", marginLeft: "2px" }}>분</span>
+              <span style={{ fontSize: "0.8rem", fontWeight: 700, color: "#94A3B8", marginLeft: "2px" }}>분</span>
             </span>
           </div>
         ))}
@@ -264,12 +265,12 @@ export default function EmergencyMonitor() {
   const occupancyRate = Math.round((stats.occupied / stats.bedCapacity) * 100);
   const occCenter = centerNum(`${occupancyRate}%`, `${stats.occupied}/${stats.bedCapacity} 병상`);
   const ktasCenter = centerNum(stats.occupied, "명 재실");
-  const gridCols = "34px 62px 96px minmax(52px,0.6fr) 66px 90px 104px minmax(80px,1.2fr) 58px 76px 76px 80px";
+  const gridCols = "46px 84px 128px minmax(64px,0.6fr) 92px 128px 168px minmax(100px,1.1fr) 78px 110px 110px 110px";
 
   return (
     <div style={{ height: "100vh", overflow: "hidden", background: "#F1F5F9", display: "flex", flexDirection: "column" }}>
       {/* 헤더 */}
-      <div style={{ background: "#fff", padding: "14px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", boxShadow: "0 1px 0 #F3F4F6, 0 2px 8px rgba(0,0,0,0.04)", flexShrink: 0 }}>
+      <div style={{ position: "relative", background: "#fff", padding: "14px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", boxShadow: "0 1px 0 #F3F4F6, 0 2px 8px rgba(0,0,0,0.04)", flexShrink: 0 }}>
         <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
           <div style={{ width: "56px", height: "56px", borderRadius: "14px", background: `linear-gradient(135deg, ${ACCENT} 0%, #9F1239 100%)`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.6rem", boxShadow: `0 4px 12px ${ACCENT}40` }}>
             🚑
@@ -280,6 +281,10 @@ export default function EmergencyMonitor() {
               <span style={{ color: ACCENT, fontWeight: 700 }}>응급실</span> · 혼잡도 현황판
             </div>
           </div>
+        </div>
+        <div style={{ position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)", textAlign: "center", pointerEvents: "none" }}>
+          <div style={{ fontSize: "1.5rem", fontWeight: 900, color: "#0F172A", letterSpacing: "-0.01em", whiteSpace: "nowrap" }}>응급실 혼잡도 전광판</div>
+          <div style={{ width: "40px", height: "3px", borderRadius: "2px", background: ACCENT, margin: "6px auto 0" }} />
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
           <BoardNav />
@@ -338,8 +343,8 @@ export default function EmergencyMonitor() {
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: gridCols, padding: "8px 22px", gap: "8px", background: "#F8FAFC", borderBottom: "1px solid #F1F5F9", flexShrink: 0 }}>
-            {["순번", "Bed", "등록번호", "이름", "나이/성별", "중증도", "예상대기", "주증상", "경과시간", "영상검사", "랩검사", "상태"].map((h) => (
-              <div key={h} style={{ fontSize: "0.67rem", fontWeight: 700, color: "#94A3B8", letterSpacing: "0.04em" }}>
+            {["순번", "Bed", "등록번호", "이름", "나이/성별", "중증도", "예상대기", "주증상", "경과시간", "영상검사", "진단검사", "상태"].map((h) => (
+              <div key={h} style={{ fontSize: "0.95rem", fontWeight: 700, color: "#94A3B8", letterSpacing: "0.04em" }}>
                 {h}
               </div>
             ))}
@@ -355,19 +360,19 @@ export default function EmergencyMonitor() {
                     display: "grid",
                     gridTemplateColumns: gridCols,
                     alignItems: "center",
-                    padding: "11px 22px",
+                    padding: "14px 22px",
                     gap: "8px",
                     borderBottom: "1px solid #F8FAFC",
                     background: p.ktas === 1 ? "#FFF5F6" : "#fff",
                   }}
                 >
-                  <div style={{ fontSize: "0.8rem", color: "#94A3B8", fontWeight: 700 }}>{page * ROWS_PER_PAGE + i + 1}</div>
+                  <div style={{ fontSize: "1.15rem", color: "#94A3B8", fontWeight: 700 }}>{page * ROWS_PER_PAGE + i + 1}</div>
                   <div>
                     <BedBadge bed={p.bed} />
                   </div>
-                  <div style={{ fontSize: "0.8rem", color: "#64748B", fontWeight: 700, fontVariantNumeric: "tabular-nums" }}>{p.number}</div>
-                  <div style={{ fontSize: "0.9rem", fontWeight: 700, color: "#0F172A", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{p.name}</div>
-                  <div style={{ fontSize: "0.78rem", color: "#64748B" }}>
+                  <div style={{ fontSize: "1.15rem", color: "#64748B", fontWeight: 700, fontVariantNumeric: "tabular-nums" }}>{p.number}</div>
+                  <div style={{ fontSize: "1.3rem", fontWeight: 700, color: "#0F172A", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{maskName(p.name)}</div>
+                  <div style={{ fontSize: "1.15rem", color: "#64748B" }}>
                     {p.age}세 · {p.gender}
                   </div>
                   <div>
@@ -376,8 +381,8 @@ export default function EmergencyMonitor() {
                   <div>
                     <WaitBadge level={p.ktas} />
                   </div>
-                  <div style={{ fontSize: "0.82rem", color: "#334155", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{p.complaint}</div>
-                  <div style={{ fontSize: "0.8rem", color: elapsedMin >= 60 ? "#E11D48" : "#64748B", fontWeight: elapsedMin >= 60 ? 800 : 600 }}>{elapsedMin}분</div>
+                  <div style={{ fontSize: "1.2rem", color: "#334155", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{p.complaint}</div>
+                  <div style={{ fontSize: "1.15rem", color: elapsedMin >= 60 ? "#E11D48" : "#64748B", fontWeight: elapsedMin >= 60 ? 800 : 600 }}>{elapsedMin}분</div>
                   <div>
                     <TestBadge value={p.imaging} />
                   </div>

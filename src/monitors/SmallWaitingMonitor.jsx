@@ -3,6 +3,7 @@ import Clock from "../components/Clock";
 import BoardNav from "../components/BoardNav";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { fetchDepartments, fetchNotices, fetchHospitalInfo } from "../api/dataService";
+import { maskName } from "../utils/maskName";
 
 const COLOR_PRESETS = [
   { label: "오션 블루", color: "#2563EB" },
@@ -538,7 +539,7 @@ function DoctorCardFull({ doctor, deptName, accent, waitingCount, currentPatient
           <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#fff", animation: "pulse 1.4s ease-in-out infinite", flexShrink: 0 }} />
           <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{ fontSize: "0.58rem", fontWeight: 700, color: "rgba(255,255,255,0.6)", letterSpacing: "0.12em", marginBottom: "3px" }}>진료중</div>
-            <div style={{ fontSize: "1.15rem", fontWeight: 900, color: "#fff", lineHeight: 1.2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{currentPatient.name} 님</div>
+            <div style={{ fontSize: "1.15rem", fontWeight: 900, color: "#fff", lineHeight: 1.2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{maskName(currentPatient.name)} 님</div>
           </div>
           <span style={{ fontSize: "0.65rem", fontWeight: 800, padding: "4px 9px", borderRadius: "8px", flexShrink: 0, color: "#fff", background: currentPatient.type === "초진" ? "rgba(124,58,237,0.5)" : "rgba(255,255,255,0.2)", border: "1px solid rgba(255,255,255,0.2)" }}>{currentPatient.type}</span>
         </div>
@@ -637,7 +638,7 @@ function PatientRow({ patient, rank, accent }) {
       {isActive && <div style={{ position: "absolute", inset: 0, background: `linear-gradient(90deg,transparent,${accent}08,transparent)`, animation: "scan 2.5s ease-in-out infinite", pointerEvents: "none", borderRadius: "12px" }} />}
       <div style={{ width: "30px", height: "30px", borderRadius: "9px", background: isActive ? accent : "#E5E7EB", color: isActive ? "#fff" : "#9CA3AF", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.82rem", fontWeight: 800, boxShadow: isActive ? `0 3px 8px ${accent}50` : "none", zIndex: 1 }}>{isActive ? "▶" : rank}</div>
       <div style={{ fontSize: "1rem", fontWeight: 800, color: isActive ? accent : "#374151", letterSpacing: "0.03em", zIndex: 1 }}>{patient.number}</div>
-      <div style={{ fontSize: "1.05rem", fontWeight: isActive ? 800 : 600, color: isActive ? "#111827" : "#374151", zIndex: 1 }}>{patient.name} 님</div>
+      <div style={{ fontSize: "1.05rem", fontWeight: isActive ? 800 : 600, color: isActive ? "#111827" : "#374151", zIndex: 1 }}>{maskName(patient.name)} 님</div>
       <div style={{ fontSize: "0.9rem", color: "#6B7280", zIndex: 1 }}>{patient.age}세</div>
       <div style={{ fontSize: "0.82rem", fontWeight: 700, color: patient.gender === "여" ? "#DB2777" : "#2563EB", background: patient.gender === "여" ? "#FDF2F8" : "#EFF6FF", padding: "3px 7px", borderRadius: "7px", textAlign: "center", zIndex: 1 }}>{patient.gender}</div>
       <div style={{ textAlign: "center", zIndex: 1 }}>
@@ -725,7 +726,7 @@ function WaitingList({ doctor, accent, showWaitingBadge }) {
           {/* 텍스트 */}
           <div style={{ flex: 1, minWidth: 0, zIndex: 1 }}>
             <div style={{ fontSize: "0.6rem", fontWeight: 800, color: accent, letterSpacing: "0.14em", marginBottom: "2px" }}>🔴 진료중</div>
-            <div style={{ fontSize: "1.25rem", fontWeight: 900, color: "#111827", lineHeight: 1.2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{current.name} 님</div>
+            <div style={{ fontSize: "1.25rem", fontWeight: 900, color: "#111827", lineHeight: 1.2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{maskName(current.name)} 님</div>
           </div>
           {/* 등록번호 + 구분 */}
           <div style={{ textAlign: "right", flexShrink: 0, zIndex: 1 }}>
@@ -846,7 +847,7 @@ export default function SmallWaitingMonitor() {
       )}
 
       {/* 헤더 */}
-      <div style={{ background: "#fff", padding: "14px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", boxShadow: "0 1px 0 #F3F4F6, 0 2px 8px rgba(0,0,0,0.04)", flexShrink: 0 }}>
+      <div style={{ position: "relative", background: "#fff", padding: "14px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", boxShadow: "0 1px 0 #F3F4F6, 0 2px 8px rgba(0,0,0,0.04)", flexShrink: 0 }}>
         <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
           <button
             onClick={() => setShowSettings(true)}
@@ -881,6 +882,10 @@ export default function SmallWaitingMonitor() {
               )}
             </div>
           </div>
+        </div>
+        <div style={{ position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)", textAlign: "center", pointerEvents: "none" }}>
+          <div style={{ fontSize: "1.5rem", fontWeight: 900, color: "#111827", letterSpacing: "-0.01em", whiteSpace: "nowrap" }}>소대기 전광판</div>
+          <div style={{ width: "40px", height: "3px", borderRadius: "2px", background: "#059669", margin: "6px auto 0" }} />
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
           <BoardNav />

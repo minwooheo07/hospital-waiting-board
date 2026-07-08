@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 
@@ -14,13 +15,24 @@ const btnStyle = {
 };
 
 // 전광판 상단에 붙는 화면 전환/로그아웃 버튼.
-// TV 화면에서 눈에 띄지 않도록 작게 유지한다.
+// TV 화면에서는 평소 숨겨두고 마우스를 올렸을 때만 보이게 한다.
 export default function BoardNav() {
   const navigate = useNavigate();
   const { logout } = useAuth();
+  const [hovered, setHovered] = useState(false);
 
   return (
-    <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        display: "flex",
+        gap: "6px",
+        alignItems: "center",
+        opacity: hovered ? 1 : 0,
+        transition: "opacity 0.2s ease",
+      }}
+    >
       <button
         style={btnStyle}
         onClick={() => {
