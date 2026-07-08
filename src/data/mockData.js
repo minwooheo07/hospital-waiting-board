@@ -359,3 +359,41 @@ export const RADIOLOGY_NOTICES = [
   "MRI 검사실 입실 전 금속류(시계, 액세서리, 카드 등)를 반드시 제거해 주세요.",
   "검사 관련 문의는 영상의학과 접수(☎ 1688-0000, 내선 3300)로 연락 주세요.",
 ];
+
+// 수술실 전광판 — 진행현황 단계별 표준 색상.
+export const OR_STATUS_LEVELS = {
+  대기: { color: "#D97706", bg: "#FFFBEB" },
+  마취중: { color: "#4F46E5", bg: "#EEF2FF" },
+  수술중: { color: "#DC2626", bg: "#FEF2F2" },
+  회복중: { color: "#0D9488", bg: "#F0FDFA" },
+  완료: { color: "#6B7280", bg: "#F3F4F6" },
+};
+
+export const OR_INFO = {
+  roomCapacity: 8,
+};
+
+// 실제로는 수술 스케줄/EMR 시스템에서 실시간으로 갱신되는 값이다.
+// 개인정보 보호를 위해 화면에는 이름 가운데 글자만 마스킹해 표시한다.
+export const OR_PATIENTS_SEED = [
+  { id: "or-1", room: "수술방 1", name: "김도현", gender: "남", age: 62, dept: "일반외과", ward: "3병동", status: "수술중", startedMin: 55 },
+  { id: "or-2", room: "수술방 2", name: "이수민", gender: "여", age: 34, dept: "산부인과", ward: "5병동", status: "마취중", startedMin: 12 },
+  { id: "or-3", room: "수술방 3", name: "박준서", gender: "남", age: 8, dept: "정형외과", ward: "4병동", status: "대기", startedMin: 0 },
+  { id: "or-4", room: "수술방 4", name: "최영자", gender: "여", age: 78, dept: "신경외과", ward: "6병동", status: "수술중", startedMin: 140 },
+  { id: "or-5", room: "수술방 5", name: "정민재", gender: "남", age: 45, dept: "비뇨기과", ward: "3병동", status: "회복중", startedMin: 190 },
+  { id: "or-6", room: "수술방 6", name: "한지우", gender: "여", age: 29, dept: "일반외과", ward: "3병동", status: "수술중", startedMin: 38 },
+  { id: "or-7", room: "수술방 7", name: "윤성훈", gender: "남", age: 55, dept: "흉부외과", ward: "7병동", status: "마취중", startedMin: 8 },
+  { id: "or-8", room: "수술방 8", name: "조은서", gender: "여", age: 71, dept: "정형외과", ward: "4병동", status: "대기", startedMin: 0 },
+  { id: "or-9", room: "수술방 1", name: "장태민", gender: "남", age: 19, dept: "일반외과", ward: "3병동", status: "완료", startedMin: 210 },
+  { id: "or-10", room: "수술방 3", name: "서다인", gender: "여", age: 3, dept: "이비인후과", ward: "2병동", status: "완료", startedMin: 95 },
+  { id: "or-11", room: "수술방 5", name: "임도현", gender: "남", age: 58, dept: "정형외과", ward: "4병동", status: "완료", startedMin: 175 },
+  { id: "or-12", room: "수술방 7", name: "한소희", gender: "여", age: 42, dept: "산부인과", ward: "5병동", status: "완료", startedMin: 130 },
+];
+
+// 수술실 하단 마퀴 공지.
+export const OR_NOTICES = [
+  "수술 순서는 환자 상태 및 응급도에 따라 변경될 수 있습니다.",
+  "보호자 대기 장소는 수술실 앞 대기실입니다. 진행 상황은 담당 간호사가 안내해 드립니다.",
+  "수술 관련 문의는 수술실 안내데스크(☎ 1688-0000, 내선 5500)로 연락 주세요.",
+  "면회 및 촬영은 감염 관리를 위해 제한될 수 있습니다.",
+];

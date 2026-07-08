@@ -43,6 +43,14 @@ const BOARDS = [
     desc: "검사실별로 현재 호출 중인 환자와 대기 순번을 표시합니다. 개인정보 보호를 위해 이름은 일부만 마스킹해 보여줍니다.",
     accent: "#4338CA",
   },
+  {
+    key: "or",
+    icon: "🔪",
+    title: "수술실 진행 현황판",
+    subtitle: "수술실 · 보호자 대기실",
+    desc: "수술방 가동률과 진행현황(대기·마취중·수술중·회복중·완료)을 도넛 차트로 요약하고, 환자 목록을 자동 페이징으로 보여줍니다.",
+    accent: "#7C3AED",
+  },
 ];
 
 export default function SelectScreen() {

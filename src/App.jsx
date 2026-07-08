@@ -7,8 +7,9 @@ import SmallWaitingMonitor from "./monitors/SmallWaitingMonitor";
 import PharmacyMonitor from "./monitors/PharmacyMonitor";
 import EmergencyMonitor from "./monitors/EmergencyMonitor";
 import RadiologyMonitor from "./monitors/RadiologyMonitor";
+import OperatingRoomMonitor from "./monitors/OperatingRoomMonitor";
 
-const BOARD_KEYS = ["main", "small", "pharmacy", "er", "radiology"];
+const BOARD_KEYS = ["main", "small", "pharmacy", "er", "radiology", "or"];
 
 function RequireAuth({ children }) {
   const { user } = useAuth();
@@ -77,6 +78,14 @@ export default function App() {
         element={
           <RequireAuth>
             <RadiologyMonitor />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/board/or"
+        element={
+          <RequireAuth>
+            <OperatingRoomMonitor />
           </RequireAuth>
         }
       />

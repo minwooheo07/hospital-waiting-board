@@ -16,6 +16,9 @@ import {
   RADIOLOGY_MODALITIES,
   RADIOLOGY_QUEUE_SEED,
   RADIOLOGY_NOTICES,
+  OR_INFO,
+  OR_PATIENTS_SEED,
+  OR_NOTICES,
 } from "../data/mockData";
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -103,5 +106,14 @@ export function nextRadiologyPatient(roomId) {
     gender: Math.random() < 0.5 ? "남" : "여",
     exam: exams[Math.floor(Math.random() * exams.length)],
     calledAt: Date.now(),
+  };
+}
+
+export async function fetchORStatus() {
+  await delay(200);
+  return {
+    roomCapacity: OR_INFO.roomCapacity,
+    patients: OR_PATIENTS_SEED.map((p) => ({ ...p })),
+    notices: [...OR_NOTICES],
   };
 }
