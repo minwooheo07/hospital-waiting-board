@@ -168,45 +168,64 @@ function ReadyList({ queue, now }) {
         </div>
       </div>
 
-      <div style={{ flex: 1, minWidth: 0, overflow: "hidden", padding: "14px 16px", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gridAutoRows: "min-content", alignContent: "start", gap: "12px" }}>
+      <div style={{ flex: 1, minWidth: 0, overflow: "hidden", padding: "16px 18px", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gridAutoRows: "min-content", alignContent: "start", gap: "14px" }}>
         {queue.map((item, i) => {
           const isLatest = i === 0;
           return (
             <div
               key={item.number}
               style={{
+                position: "relative",
                 display: "flex",
                 alignItems: "center",
-                gap: "12px",
-                padding: "16px 18px",
-                borderRadius: "16px",
+                gap: "16px",
+                padding: "20px 22px",
+                borderRadius: "18px",
                 background: isLatest ? `${ACCENT}0F` : "#FAFAFA",
                 border: isLatest ? `2px solid ${ACCENT}` : "1.5px solid #F0F2F5",
                 boxShadow: isLatest ? `0 0 0 4px ${ACCENT}12` : "none",
                 animation: isLatest ? "fadeUp 0.4s ease-out" : "none",
               }}
             >
+              {isLatest && (
+                <span
+                  style={{
+                    position: "absolute",
+                    top: "-9px",
+                    right: "14px",
+                    fontSize: "0.66rem",
+                    fontWeight: 800,
+                    color: "#fff",
+                    background: ACCENT,
+                    padding: "3px 11px",
+                    borderRadius: "999px",
+                    boxShadow: `0 3px 8px ${ACCENT}60`,
+                    letterSpacing: "0.03em",
+                  }}
+                >
+                  NEW
+                </span>
+              )}
               <div
                 style={{
-                  width: "44px",
-                  height: "44px",
-                  borderRadius: "12px",
+                  width: "58px",
+                  height: "58px",
+                  borderRadius: "14px",
                   background: isLatest ? ACCENT : "#E5E7EB",
                   color: isLatest ? "#fff" : "#9CA3AF",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  fontSize: "1.2rem",
+                  fontSize: "1.55rem",
                   flexShrink: 0,
                 }}
               >
                 💊
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: "1.25rem", fontWeight: 900, color: isLatest ? ACCENT : "#374151", fontVariantNumeric: "tabular-nums", letterSpacing: "0.03em" }}>{item.number}</div>
-                <div style={{ fontSize: "0.68rem", color: "#9CA3AF", marginTop: "2px" }}>{formatElapsed(item.calledAt, now)}</div>
+                <div style={{ fontSize: "1.7rem", fontWeight: 900, color: isLatest ? ACCENT : "#374151", fontVariantNumeric: "tabular-nums", letterSpacing: "0.03em", lineHeight: 1.15 }}>{item.number}</div>
+                <div style={{ fontSize: "0.82rem", color: "#9CA3AF", marginTop: "3px", fontWeight: 600 }}>{formatElapsed(item.calledAt, now)}</div>
               </div>
-              {isLatest && <span style={{ fontSize: "0.62rem", fontWeight: 800, color: "#fff", background: ACCENT, padding: "3px 9px", borderRadius: "999px", flexShrink: 0 }}>NEW</span>}
             </div>
           );
         })}

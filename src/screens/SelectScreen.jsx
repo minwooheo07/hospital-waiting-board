@@ -35,6 +35,14 @@ const BOARDS = [
     desc: "병상 가동률과 중증도(KTAS), 검사 진행 현황을 도넛 차트로 요약하고, 현재 재실 환자 목록을 함께 보여줍니다.",
     accent: "#DC2626",
   },
+  {
+    key: "radiology",
+    icon: "🩻",
+    title: "영상의학과 호출 전광판",
+    subtitle: "X-ray · CT · MRI · 초음파",
+    desc: "검사실별로 현재 호출 중인 환자와 대기 순번을 표시합니다. 개인정보 보호를 위해 이름은 일부만 마스킹해 보여줍니다.",
+    accent: "#4338CA",
+  },
 ];
 
 export default function SelectScreen() {

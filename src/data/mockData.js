@@ -277,3 +277,85 @@ export const ER_PATIENTS_SEED = [
   { id: "er-9", bed: "C-01", number: "202500239", name: "장태민", age: 19, gender: "남", ktas: 4, complaint: "발목 염좌", arrivalMin: 21, imaging: "대기", lab: "해당없음", status: "대기" },
   { id: "er-10", bed: "A-06", number: "202500240", name: "서다인", age: 3, gender: "여", ktas: 3, complaint: "고열 · 탈수 의심", arrivalMin: 15, imaging: "해당없음", lab: "진행중", status: "진료중" },
 ];
+
+// 영상의학과 호출 전광판 — 파트(모달리티) 구성.
+// 실제로는 파트마다 전광판을 따로 운영하며, 파트별 방 개수도 제각각이라
+// 방 목록을 파트에 종속시켜 방 개수가 유동적으로 늘고 줄 수 있도록 한다.
+export const RADIOLOGY_MODALITIES = [
+  {
+    id: "xray",
+    name: "X-ray",
+    icon: "🦴",
+    accent: "#2563EB",
+    rooms: [
+      { id: "xray-1", label: "1번방" },
+      { id: "xray-2", label: "2번방" },
+      { id: "xray-3", label: "3번방" },
+    ],
+  },
+  {
+    id: "ct",
+    name: "CT",
+    icon: "🌀",
+    accent: "#7C3AED",
+    rooms: [
+      { id: "ct-1", label: "1번방" },
+      { id: "ct-2", label: "2번방" },
+    ],
+  },
+  {
+    id: "mri",
+    name: "MRI",
+    icon: "🧲",
+    accent: "#059669",
+    rooms: [{ id: "mri-1", label: "1번방" }],
+  },
+  {
+    id: "us",
+    name: "초음파",
+    icon: "🔊",
+    accent: "#EA580C",
+    rooms: [
+      { id: "us-1", label: "1번방" },
+      { id: "us-2", label: "2번방" },
+      { id: "us-3", label: "3번방" },
+      { id: "us-4", label: "4번방" },
+    ],
+  },
+];
+
+// 방(room id)별 대기열. 맨 앞 항목이 현재 호출 중인 환자, 나머지가 대기 순번이다.
+// 개인정보 보호를 위해 등록번호 대신 이름 일부 마스킹 + 나이/성별만 표시한다.
+export const RADIOLOGY_QUEUE_SEED = {
+  "xray-1": [
+    { id: "xr1-1", name: "홍길동", age: 54, gender: "남", exam: "흉부 X-ray", calledAt: Date.now() - 1000 * 20 },
+    { id: "xr1-2", name: "이미래", age: 38, gender: "여", exam: "복부 X-ray", calledAt: Date.now() - 1000 * 90 },
+    { id: "xr1-3", name: "박성호", age: 67, gender: "남", exam: "척추 X-ray", calledAt: Date.now() - 1000 * 160 },
+  ],
+  "xray-2": [
+    { id: "xr2-1", name: "최연수", age: 29, gender: "여", exam: "손목 X-ray", calledAt: Date.now() - 1000 * 35 },
+    { id: "xr2-2", name: "정우진", age: 45, gender: "남", exam: "무릎 X-ray", calledAt: Date.now() - 1000 * 120 },
+  ],
+  "xray-3": [{ id: "xr3-1", name: "강하늘", age: 33, gender: "여", exam: "흉부 X-ray", calledAt: Date.now() - 1000 * 50 }],
+  "ct-1": [
+    { id: "ct1-1", name: "조민서", age: 51, gender: "여", exam: "복부 CT", calledAt: Date.now() - 1000 * 40 },
+    { id: "ct1-2", name: "윤태경", age: 60, gender: "남", exam: "흉부 CT", calledAt: Date.now() - 1000 * 130 },
+  ],
+  "ct-2": [{ id: "ct2-1", name: "한지민", age: 42, gender: "여", exam: "뇌 CT", calledAt: Date.now() - 1000 * 70 }],
+  "mri-1": [
+    { id: "mri1-1", name: "장태민", age: 19, gender: "남", exam: "뇌 MRI", calledAt: Date.now() - 1000 * 60 },
+    { id: "mri1-2", name: "서다인", age: 3, gender: "여", exam: "척추 MRI", calledAt: Date.now() - 1000 * 200 },
+  ],
+  "us-1": [{ id: "us1-1", name: "김도현", age: 62, gender: "남", exam: "복부 초음파", calledAt: Date.now() - 1000 * 15 }],
+  "us-2": [{ id: "us2-1", name: "이수민", age: 34, gender: "여", exam: "갑상선 초음파", calledAt: Date.now() - 1000 * 100 }],
+  "us-3": [{ id: "us3-1", name: "최영자", age: 78, gender: "여", exam: "심장 초음파", calledAt: Date.now() - 1000 * 190 }],
+  "us-4": [{ id: "us4-1", name: "박준서", age: 8, gender: "남", exam: "복부 초음파", calledAt: Date.now() - 1000 * 45 }],
+};
+
+// 영상의학과 하단 마퀴 공지.
+export const RADIOLOGY_NOTICES = [
+  "검사 순서는 예약 및 검사실 상황에 따라 변경될 수 있습니다.",
+  "조영제 사용 검사는 사전 문진표 작성 후 검사실 앞에서 대기해 주세요.",
+  "MRI 검사실 입실 전 금속류(시계, 액세서리, 카드 등)를 반드시 제거해 주세요.",
+  "검사 관련 문의는 영상의학과 접수(☎ 1688-0000, 내선 3300)로 연락 주세요.",
+];

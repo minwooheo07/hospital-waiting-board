@@ -13,6 +13,9 @@ import {
   ER_RESOURCES,
   ER_TEST_TIMES,
   ER_NOTICES,
+  RADIOLOGY_MODALITIES,
+  RADIOLOGY_QUEUE_SEED,
+  RADIOLOGY_NOTICES,
 } from "../data/mockData";
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -60,5 +63,45 @@ export async function fetchERStatus() {
     resources: { ...ER_RESOURCES },
     testTimes: ER_TEST_TIMES.map((t) => ({ ...t })),
     notices: [...ER_NOTICES],
+  };
+}
+
+// 파트(모달리티) 목록과 방별 대기열을 함께 내려준다. 파트마다 방 개수가 다르므로
+// 화면에서는 rooms 배열 길이에 맞춰 레이아웃을 유동적으로 구성한다.
+export async function fetchRadiologyStatus() {
+  await delay(200);
+  const queues = {};
+  for (const modality of RADIOLOGY_MODALITIES) {
+    for (const room of modality.rooms) {
+      queues[room.id] = (RADIOLOGY_QUEUE_SEED[room.id] || []).map((p) => ({ ...p }));
+    }
+  }
+  return {
+    modalities: RADIOLOGY_MODALITIES.map((m) => ({ ...m, rooms: m.rooms.map((r) => ({ ...r })) })),
+    queues,
+    notices: [...RADIOLOGY_NOTICES],
+  };
+}
+
+const EXAMS_BY_MODALITY = {
+  xray: ["흉부 X-ray", "복부 X-ray", "척추 X-ray", "손목 X-ray", "무릎 X-ray"],
+  ct: ["복부 CT", "흉부 CT", "뇌 CT", "척추 CT"],
+  mri: ["뇌 MRI", "척추 MRI", "무릎 MRI", "어깨 MRI"],
+  us: ["복부 초음파", "갑상선 초음파", "심장 초음파", "유방 초음파"],
+};
+const NAME_POOL = ["김서준", "이지호", "박하은", "최도윤", "정지안", "강민준", "윤서아", "임지후", "한소율", "오은우"];
+
+// 실제 촬영 시스템 연동 전까지, 방별로 새 환자가 무작위로 호출되는 상황을 흉내낸다.
+// roomId는 "xray-1"처럼 "{모달리티}-{번호}" 형태이므로 앞부분으로 검사 종류 후보를 고른다.
+export function nextRadiologyPatient(roomId) {
+  const modalityId = roomId.split("-")[0];
+  const exams = EXAMS_BY_MODALITY[modalityId] || EXAMS_BY_MODALITY.xray;
+  return {
+    id: `${roomId}-${Date.now()}-${Math.floor(Math.random() * 100000)}`,
+    name: NAME_POOL[Math.floor(Math.random() * NAME_POOL.length)],
+    age: 10 + Math.floor(Math.random() * 70),
+    gender: Math.random() < 0.5 ? "남" : "여",
+    exam: exams[Math.floor(Math.random() * exams.length)],
+    calledAt: Date.now(),
   };
 }
